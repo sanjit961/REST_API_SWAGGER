@@ -1,0 +1,933 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API made using NodeJs MongoDb",
+    "description": "User Restful webservice application",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "schemes": ["http", "https"],
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users"
+    }
+  ],
+  "produces": ["application/json", "application/text"],
+  "paths": {
+    "/post": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "username",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "phone",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "pin",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "hobby",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "city",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "street",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "school",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "degree",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "diploma",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "masters",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "sports",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "extraCurricular",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "softSkillOne",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "softSkillTwo",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "softSkillThree",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "hardSkillOne",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "hardSkillTwo",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "hardSkillThree",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "MIL",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "English",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "Mathematics",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "AdvancedMaths",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "SocialScience",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "GeneralScience",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "produces": ["application/json"],
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register the user",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/RegisteredUser"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/getAllUsers": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/getById/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Id of the user which is to be searched",
+          "type": "string"
+        }
+      ],
+      "produces": ["application/json"],
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by id",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users": {
+      "parameters": [
+        {
+          "name": "page",
+          "in": "query",
+          "description": "page",
+          "type": "integer"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "limit",
+          "type": "integer"
+        }
+      ],
+      "produces": ["application/json"],
+      "get": {
+        "tags": ["Users"],
+        "summary": "apply limit filter",
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/delete/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Id of the user which is to be deleted",
+          "type": "string"
+        }
+      ],
+      "produces": ["application/json"],
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user by id",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/Deleted"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/update/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Id of the user which is to be update",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "username",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "phone",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "pin",
+          "in": "query",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "hobby",
+          "in": "query",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "produces": ["application/json"],
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user by id",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/sort": {
+      "parameters": [
+        {
+          "name": "sort",
+          "in": "query",
+          "required": true,
+          "description": "sort Ascending or Descending Orders",
+          "type": "string"
+        }
+      ],
+      "produces": ["application/json"],
+      "get": {
+        "tags": ["Users"],
+        "summary": "ascending or descending",
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/filter": {
+      "parameters": [
+        {
+          "name": "username",
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "type": "string"
+        }
+      ],
+      "produces": ["application/json"],
+      "get": {
+        "tags": ["Users"],
+        "summary": "type  username to find the data",
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/deleteAll": {
+      "produces": ["application/json"],
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete all the users",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/Deleted"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "301": {
+            "description": "Moved Permanently"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RegisteredUser": {
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "results": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "address": {
+              "type": "object",
+              "properties": {
+                "pin": {
+                  "type": "integer"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                }
+              }
+            },
+            "qualifications": {
+              "type": "object",
+              "properties": {
+                "education": {
+                  "type": "object",
+                  "properties": {
+                    "school": {
+                      "type": "string"
+                    },
+                    "diploma": {
+                      "type": "string"
+                    },
+                    "degree": {
+                      "type": "string"
+                    },
+                    "masters": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "others": {
+                  "type": "object",
+                  "properties": {
+                    "sports": {
+                      "type": "string"
+                    },
+                    "extraCurricular": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "skills": {
+              "type": "object",
+              "properties": {
+                "softSkill": {
+                  "type": "object",
+                  "properties": {
+                    "softSkillOne": {
+                      "type": "string"
+                    },
+                    "softSkillTwo": {
+                      "type": "string"
+                    },
+                    "softSkillThree": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "hardSkill": {
+                  "type": "object",
+                  "properties": {
+                    "hardSkillOne": {
+                      "type": "string"
+                    },
+                    "hardSkillTwo": {
+                      "type": "string"
+                    },
+                    "hardSkillThree": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "marksObtained": {
+              "type": "object",
+              "properties": {
+                "HighSchoolExam": {
+                  "type": "object",
+                  "properties": {
+                    "MIL": {
+                      "type": "integer"
+                    },
+                    "English": {
+                      "type": "integer"
+                    },
+                    "Mathematics": {
+                      "type": "integer"
+                    },
+                    "AdvancedMaths": {
+                      "type": "integer"
+                    },
+                    "SocialScience": {
+                      "type": "integer"
+                    },
+                    "GeneralScience": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        }
+      }
+    },
+    "DeletedUser": {
+      "required": ["id"],
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateUser": {
+      "required": ["id"],
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+
+    "User": {
+      "required": ["name", "id", "email"],
+      "properties": {
+        "Message": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "uniqueItems": true
+            },
+            "name": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "address": {
+              "type": "object",
+              "properties": {
+                "pin": {
+                  "type": "integer"
+                },
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                }
+              }
+            },
+            "qualifications": {
+              "type": "object",
+              "properties": {
+                "education": {
+                  "type": "object",
+                  "properties": {
+                    "school": {
+                      "type": "string"
+                    },
+                    "diploma": {
+                      "type": "string"
+                    },
+                    "degree": {
+                      "type": "string"
+                    },
+                    "masters": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "others": {
+                  "type": "object",
+                  "properties": {
+                    "sports": {
+                      "type": "string"
+                    },
+                    "extraCurricular": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "skills": {
+              "type": "object",
+              "properties": {
+                "softSkill": {
+                  "type": "object",
+                  "properties": {
+                    "softSkillOne": {
+                      "type": "string"
+                    },
+                    "softSkillTwo": {
+                      "type": "string"
+                    },
+                    "softSkillThree": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "hardSkill": {
+                  "type": "object",
+                  "properties": {
+                    "hardSkillOne": {
+                      "type": "string"
+                    },
+                    "hardSkillTwo": {
+                      "type": "string"
+                    },
+                    "hardSkillThree": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "marksObtained": {
+              "type": "object",
+              "properties": {
+                "HighSchoolExam": {
+                  "type": "object",
+                  "properties": {
+                    "MIL": {
+                      "type": "integer"
+                    },
+                    "English": {
+                      "type": "integer"
+                    },
+                    "Mathematics": {
+                      "type": "integer"
+                    },
+                    "AdvancedMaths": {
+                      "type": "integer"
+                    },
+                    "SocialScience": {
+                      "type": "integer"
+                    },
+                    "GeneralScience": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    },
+    "Deleted": {
+      "type": "array",
+      "$ref": "#/definitions/DeletedUser"
+    },
+    "Updated": {
+      "type": "array",
+      "$ref": "#/definitions/UpdateUser"
+    },
+    "Registered": {
+      "type": "array",
+      "$ref": "#/definitions/RegisteredUser"
+    }
+  }
+}
