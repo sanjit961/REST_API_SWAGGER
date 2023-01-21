@@ -20,168 +20,20 @@
   "produces": ["application/json", "application/text"],
   "paths": {
     "/post": {
-      "parameters": [
-        {
-          "name": "email",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "username",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "phone",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "pin",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "name",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "hobby",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "city",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "street",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "school",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "degree",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "diploma",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "masters",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "sports",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "extraCurricular",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "softSkillOne",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "softSkillTwo",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "softSkillThree",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "hardSkillOne",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "hardSkillTwo",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "hardSkillThree",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "MIL",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "English",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "Mathematics",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "AdvancedMaths",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "SocialScience",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "GeneralScience",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        }
-      ],
       "produces": ["application/json"],
       "post": {
         "tags": ["Users"],
         "summary": "Register the user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User that we want to create",
+            "schema": {
+              "$ref": "#/definitions/RegisteredUser"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -619,12 +471,6 @@
   },
   "definitions": {
     "RegisteredUser": {
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "results": {
-          "type": "object",
           "properties": {
             "name": {
               "type": "string"
@@ -747,14 +593,6 @@
               }
             }
           }
-        },
-        "_id": {
-          "type": "string"
-        },
-        "__v": {
-          "type": "integer"
-        }
-      }
     },
     "DeletedUser": {
       "required": ["id"],

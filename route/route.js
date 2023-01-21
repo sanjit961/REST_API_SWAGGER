@@ -25,62 +25,23 @@ router.get("/users", paginatedResults(), (req, res) => {
   res.json({ Total: result.data.results.length, result });
 });
 router.post("/post", async (req, res) => {
-  let email = req.query.email;
-  let phone = req.query.phone;
-  let hobby = req.query.hobby;
-  let name = req.query.name;
-  let username = req.query.username;
-  let address = {
-    city: req.query.city,
-    street: req.query.street,
-    pin: req.query.pin,
-  };
-
-  let skills = {
-    softSkill: {
-      softSkillOne: req.query.softSkillOne,
-      softSkillTwo: req.query.softSkillTwo,
-      softSkillThree: req.query.softSkillThree,
-    },
-    hardSkill: {
-      hardSkillOne: req.query.hardSkillOne,
-      hardSkillTwo: req.query.hardSkillTwo,
-      hardSkillThree: req.query.hardSkillThree,
-    },
-  };
-
-  let qualifications = {
-    education: {
-      school: req.query.school,
-      diploma: req.query.diploma,
-      degree: req.query.degree,
-      masters: req.query.masters,
-    },
-    others: {
-      sports: req.query.sports,
-      extraCurricular: req.query.extraCurricular,
-    },
-  };
-  let marksObtained = {
-    HighSchoolExam: {
-      MIL: req.query.MIL,
-      English: req.query.English,
-      Mathematics: req.query.Mathematics,
-      AdvancedMaths: req.query.AdvancedMaths,
-      SocialScience: req.query.SocialScience,
-      GeneralScience: req.query.GeneralScience,
-    },
-  };
+  let address = req.body.address;
+  let skills = req.body.skills;
+  let phone = req.body.phone;
+  let name = req.body.name;
+  let email = req.body.email;
+  let username = req.body.username;
+  let qualifications = req.body.qualifications;
+  let marksObtained = req.body.marksObtained;
   const data = new Model({
-    username: username,
-    email: email,
-    phone: phone,
     name: name,
-    hobby: hobby,
-    address: address,
-    qualifications: qualifications,
+    username: username,
+    email:email,
+    phone: phone,
     skills: skills,
-    marksObtained: marksObtained,
+    qualifications: qualifications,
+    address: address,
+    marksObtained:marksObtained
   });
 
   try {
@@ -164,7 +125,7 @@ router.delete("/delete/:id", async (req, res) => {
     // let id = req.query.id;
     const id = req.params.id;
     const data = await Model.findByIdAndDelete(id);
-    res.send({message:`The user ${data.username} has been deleted!`});
+    res.send({ message: `The user ${data.username} has been deleted!` });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
