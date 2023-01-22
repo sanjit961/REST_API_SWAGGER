@@ -87,30 +87,23 @@ router.get("/getById/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-router.patch("/update/:id", async (req, res) => {
+router.patch("/update", async (req, res) => {
   try {
-    let id = req.params.id;
-    let email = req.query.email;
-    let phone = req.query.phone;
-    let hobby = req.query.hobby;
-    let name = req.query.name;
-    let username = req.query.username;
-    let address = {
-      city: req.query.city,
-      street: req.query.street,
-      pin: req.query.pin,
-    };
-
+    let id = req.body.id;
+    let phone = req.body.phone;
+    let name = req.body.name;
+    let address = req.body.address;
+    let skills = req.body.skills;
+    let qualifications = req.body.qualifications;
+    let marksObtained = req.body.marksObtained;
     const updatedData = {
-      username: username,
-      email: email,
       phone: phone,
       name: name,
-      hobby: hobby,
       address: address,
+      qualifications: qualifications,
+      skills: skills,
+      marksObtained:marksObtained
     };
-    // const id = req.params.id;
-    // const updatedData = req.body;
     const options = { new: true };
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
     res

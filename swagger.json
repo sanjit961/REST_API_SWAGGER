@@ -252,50 +252,15 @@
         }
       }
     },
-    "/update/{id}": {
+    "/update": {
       "parameters": [
         {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "Id of the user which is to be update",
-          "type": "string"
-        },
-        {
-          "name": "email",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "username",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "phone",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "pin",
-          "in": "query",
-          "required": true,
-          "type": "integer"
-        },
-        {
-          "name": "name",
-          "in": "query",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "hobby",
-          "in": "query",
-          "required": true,
-          "type": "string"
+          "name": "user",
+          "in": "body",
+          "description": "update user",
+          "schema": {
+            "$ref": "#/definitions/updateUser"
+          }
         }
       ],
       "produces": ["application/json"],
@@ -306,7 +271,7 @@
           "200": {
             "description": "ok",
             "schema": {
-              "$ref": "#/definitions/UpdateUser"
+              "$ref": "#/definitions/updateUser"
             }
           },
           "201": {
@@ -602,14 +567,128 @@
         }
       }
     },
-    "UpdateUser": {
+    "updateUser": {
       "required": ["id"],
       "properties": {
-        "message": {
+        "id": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "pin": {
+              "type": "integer"
+            },
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            }
+          }
+        },
+        "qualifications": {
+          "type": "object",
+          "properties": {
+            "education": {
+              "type": "object",
+              "properties": {
+                "school": {
+                  "type": "string"
+                },
+                "diploma": {
+                  "type": "string"
+                },
+                "degree": {
+                  "type": "string"
+                },
+                "masters": {
+                  "type": "string"
+                }
+              }
+            },
+            "others": {
+              "type": "object",
+              "properties": {
+                "sports": {
+                  "type": "string"
+                },
+                "extraCurricular": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "skills": {
+          "type": "object",
+          "properties": {
+            "softSkill": {
+              "type": "object",
+              "properties": {
+                "softSkillOne": {
+                  "type": "string"
+                },
+                "softSkillTwo": {
+                  "type": "string"
+                },
+                "softSkillThree": {
+                  "type": "string"
+                }
+              }
+            },
+            "hardSkill": {
+              "type": "object",
+              "properties": {
+                "hardSkillOne": {
+                  "type": "string"
+                },
+                "hardSkillTwo": {
+                  "type": "string"
+                },
+                "hardSkillThree": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "marksObtained": {
+          "type": "object",
+          "properties": {
+            "HighSchoolExam": {
+              "type": "object",
+              "properties": {
+                "MIL": {
+                  "type": "integer"
+                },
+                "English": {
+                  "type": "integer"
+                },
+                "Mathematics": {
+                  "type": "integer"
+                },
+                "AdvancedMaths": {
+                  "type": "integer"
+                },
+                "SocialScience": {
+                  "type": "integer"
+                },
+                "GeneralScience": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
         }
       }
-    },
+},
 
     "User": {
       "required": ["name", "id", "email"],
@@ -761,7 +840,7 @@
     },
     "Updated": {
       "type": "array",
-      "$ref": "#/definitions/UpdateUser"
+      "$ref": "#/definitions/updateUser"
     },
     "Registered": {
       "type": "array",
