@@ -449,6 +449,9 @@
             "phone": {
               "type": "string"
             },
+            "hobby": {
+              "type": "string"
+            },
             "address": {
               "type": "object",
               "properties": {
@@ -577,6 +580,9 @@
           "type": "string"
         },
         "phone": {
+          "type": "string"
+        },
+        "hobby": {
           "type": "string"
         },
         "address": {
@@ -716,6 +722,9 @@
               "type": "string"
             },
             "phone": {
+              "type": "string"
+            },
+            "hobby": {
               "type": "string"
             },
             "address": {

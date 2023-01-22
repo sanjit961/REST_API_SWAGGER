@@ -29,6 +29,7 @@ router.post("/post", async (req, res) => {
   let skills = req.body.skills;
   let phone = req.body.phone;
   let name = req.body.name;
+  let hobby = req.body.hobby;
   let email = req.body.email;
   let username = req.body.username;
   let qualifications = req.body.qualifications;
@@ -38,6 +39,7 @@ router.post("/post", async (req, res) => {
     username: username,
     email:email,
     phone: phone,
+    hobby: hobby,
     skills: skills,
     qualifications: qualifications,
     address: address,
@@ -92,6 +94,7 @@ router.patch("/update", async (req, res) => {
     let id = req.body.id;
     let phone = req.body.phone;
     let name = req.body.name;
+    let hobby = req.body.hobby;
     let address = req.body.address;
     let skills = req.body.skills;
     let qualifications = req.body.qualifications;
@@ -99,6 +102,7 @@ router.patch("/update", async (req, res) => {
     const updatedData = {
       phone: phone,
       name: name,
+      hobby:hobby,
       address: address,
       qualifications: qualifications,
       skills: skills,
