@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("./swagger.json");
-const functions = require("firebase-functions");
 require("dotenv").config();
 const app = express();
 mongoose.connect(process.env.MONGO_URL);
@@ -24,4 +23,3 @@ app.listen(process.env.PORT, () => {
   console.log(`API DOCUMENTATIONS: ${SWAGGER_DOC}`);
   console.log("The server started on port: ", process.env.PORT);
 });
-exports.api = functions.https.onRequest(app) 
