@@ -5,6 +5,7 @@ const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { auth } = require("../middlewares/auth");
 const router = express.Router();
+const db = require('../config/config').get(process.env.NODE_ENV)
 const app = express();
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -185,7 +186,7 @@ router.post("/user/generateToken", (req, res) => {
   // Validate User Here
   // Then generate JWT Token
 
-  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  let jwtSecretKey = db.JWT_SECRET_KEY;
   let data = {
     time: Date(),
     userId: 12,
@@ -199,8 +200,8 @@ router.get("/user/validateToken", (req, res) => {
   // Tokens are generally passed in the header of the request
   // Due to security reasons.
 
-  let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  let tokenHeaderKey = db.TOKEN_HEADER_KEY;
+  let jwtSecretKey = db.JWT_SECRET_KEY;
 
   try {
     const token = req.header(tokenHeaderKey);

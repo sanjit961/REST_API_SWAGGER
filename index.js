@@ -4,8 +4,9 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("./swagger.json");
 require("dotenv").config();
+const db = require('./config/config').get(process.env.NODE_ENV)
 const app = express();
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(db.MONGO_URL);
 const database = mongoose.connection;
 database.on("error", (error) => {
   console.log("error");
@@ -18,8 +19,8 @@ app.use(express.json());
 const routes = require("./route/route");
 app.use("/", routes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-const SWAGGER_DOC = `http://localhost:${process.env.PORT}/api-docs`;
-app.listen(process.env.PORT, () => {
+const SWAGGER_DOC = `http://localhost:3001}/api-docs`;
+app.listen(db.PORT || 3001, () => {
   console.log(`API DOCUMENTATIONS: ${SWAGGER_DOC}`);
-  console.log("The server started on port: ", process.env.PORT);
+  console.log("The server started on port: ", 3001);
 });
