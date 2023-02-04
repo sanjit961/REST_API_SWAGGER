@@ -1,6 +1,14 @@
 const express = require("express");
 const Model = require("../Model/model");
+const jwt = require("jsonwebtoken");
+const bodyparser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const { auth } = require("../middlewares/auth");
 const router = express.Router();
+const app = express();
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
+app.use(cookieParser());
 function paginatedResults() {
   return async (req, res, next) => {
     const page = req.query.page;
@@ -37,13 +45,13 @@ router.post("/post", async (req, res) => {
   const data = new Model({
     name: name,
     username: username,
-    email:email,
+    email: email,
     phone: phone,
     hobby: hobby,
     skills: skills,
     qualifications: qualifications,
     address: address,
-    marksObtained:marksObtained
+    marksObtained: marksObtained,
   });
 
   try {
@@ -84,7 +92,7 @@ router.get("/getById/:id", async (req, res) => {
   let id = req.params.id;
   try {
     const data = await Model.findById(id);
-    res.status(200).json({ results: data });
+    res.status(200).json({ message: "Data fetched success", results: data });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -102,11 +110,11 @@ router.patch("/update", async (req, res) => {
     const updatedData = {
       phone: phone,
       name: name,
-      hobby:hobby,
+      hobby: hobby,
       address: address,
       qualifications: qualifications,
       skills: skills,
-      marksObtained:marksObtained
+      marksObtained: marksObtained,
     };
     const options = { new: true };
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
@@ -171,6 +179,140 @@ router.get("/sort", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+router.post("/user/generateToken", (req, res) => {
+  // Validate User Here
+  // Then generate JWT Token
+
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  let data = {
+    time: Date(),
+    userId: 12,
+  };
+
+  const token = jwt.sign(data, jwtSecretKey);
+
+  res.send(token);
+});
+router.get("/user/validateToken", (req, res) => {
+  // Tokens are generally passed in the header of the request
+  // Due to security reasons.
+
+  let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+  try {
+    const token = req.header(tokenHeaderKey);
+    const verified = jwt.verify(token, jwtSecretKey);
+    if (verified) {
+      return res.send("Successfully Verified");
+    } else {
+      // Access Denied
+      return res.status(401).send(error);
+    }
+  } catch (error) {
+    // Access Denied
+    return res.status(401).send(error);
+  }
+});
+router.post("/register", async (req, res) => {
+  let username = req.body.username;
+  let name = req.body.name;
+  let password = req.body.password;
+  let email = req.body.email;
+  let phone = req.body.phone;
+  const newuser = new Model({
+    name: name,
+    username: username,
+    email: email,
+    phone: phone,
+    password: password,
+  });
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  let data = {
+    time: Date(),
+    userId: 12,
+  };
+
+  const token = jwt.sign(password, jwtSecretKey);
+  try {
+    const results = await newuser.save();
+    res.status(200).json({
+      Message: "User has been registered successfully!",
+      results,
+      token: token,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// User login ------------------------------------------
+router.post('/api/login', function (req, res) {
+  let token = req.cookies.auth
+  //we check whether a user is already logged-in or not by using findByToken function, if not error will be shown to user
+  User.findByToken(token, (err, user) => {
+    if (err) return res(err)
+    if (user)
+      return res.status(400).json({
+        error: true,
+        message: 'Sorry you are alrady logged-in'
+      })
+    else {
+      Model.findOne(
+        {
+          email: req.body.email
+        },
+        function (err, user) {
+          if (!user)
+            return res.json({
+              isAuth: false,
+              message: ' Auth failed ,email not found'
+            })
+          //if user exists then we will passwords using comparepassword function 
+          Model.comparepassword(req.body.password, (err, isMatch) => {
+            if (!isMatch)
+              return res.json({
+                isAuth: false,
+                message: "password dosen't match"
+              })
+            //User will be successfully logged in using our API and a token will be generated in the database.
+            user.generateToken((err, user) => {
+              if (err) return res.status(400).send(err);
+              res.cookie('auth', user.token).json({
+                isAuth: true,
+                id: user._id,
+                email: user.email,
+                token: user.token
+              });
+            });
+          });
+        }
+      );
+    };
+  })
+})
+
+
+router.post("/login", async (req, res) => {
+  let password = req.body.password;
+  let email = req.body.email;
+
+  try {
+    const emailFound = await Model.findOne({ email: email });
+    const passFound = await Model.findOne({ password: password });
+    if (!emailFound) {
+      res.send({ message: "Email not Found!" });
+    }
+    if (!passFound) {
+      res.send({ message: "Password Incorrect!" });
+    }
+    // if (emailFound && passFound) {
+    //   res.status(200).json({ message: "Login Success!" });
+    // }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 
