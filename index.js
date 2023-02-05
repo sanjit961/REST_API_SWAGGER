@@ -19,11 +19,9 @@ app.use(express.json());
 const routes = require("./route/route");
 app.use("/", routes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-app.get("/", (req, res) => {
-  res.json({ message: "Hello world" });
-});
+
 const SWAGGER_DOC = `http://localhost:3001}/api-docs`;
-app.listen(process.env.PORT || 3001, () => {
+app.listen(db.PORT || 3001, () => {
   console.log(`API DOCUMENTATIONS: ${SWAGGER_DOC}`);
   console.log("The server started on port: ", 3001);
 });
