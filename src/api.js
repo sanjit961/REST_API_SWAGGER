@@ -1,15 +1,32 @@
 const express = require("express");
+require("dotenv").config();
+const mongoose = require("mongoose");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDoc = require("../swagger.json");
 const Model = require("../Model/model");
 const jwt = require("jsonwebtoken");
 const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { auth } = require("../middlewares/auth");
+
 const router = express.Router();
-const db = require('../config/config').get(process.env.NODE_ENV)
+const mongoString = process.env.MONGO_URL;
+mongoose.connect(mongoString);
+const database = mongoose.connection;
+
+database.on("error", (error) => {
+  console.log("error");
+});
+database.once("connected", () => {
+  console.log("The MongoDb database connection success!");
+});
 const app = express();
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(cookieParser());
+app.use(cors());
+app.use(express.json());
 function paginatedResults() {
   return async (req, res, next) => {
     const page = req.query.page;
@@ -250,51 +267,50 @@ router.post("/register", async (req, res) => {
 });
 
 // User login ------------------------------------------
-router.post('/api/login', function (req, res) {
-  let token = req.cookies.auth
+router.post("/api/login", function (req, res) {
+  let token = req.cookies.auth;
   //we check whether a user is already logged-in or not by using findByToken function, if not error will be shown to user
   User.findByToken(token, (err, user) => {
-    if (err) return res(err)
+    if (err) return res(err);
     if (user)
       return res.status(400).json({
         error: true,
-        message: 'Sorry you are alrady logged-in'
-      })
+        message: "Sorry you are alrady logged-in",
+      });
     else {
       Model.findOne(
         {
-          email: req.body.email
+          email: req.body.email,
         },
         function (err, user) {
           if (!user)
             return res.json({
               isAuth: false,
-              message: ' Auth failed ,email not found'
-            })
-          //if user exists then we will passwords using comparepassword function 
+              message: " Auth failed ,email not found",
+            });
+          //if user exists then we will passwords using comparepassword function
           Model.comparepassword(req.body.password, (err, isMatch) => {
             if (!isMatch)
               return res.json({
                 isAuth: false,
-                message: "password dosen't match"
-              })
+                message: "password dosen't match",
+              });
             //User will be successfully logged in using our API and a token will be generated in the database.
             user.generateToken((err, user) => {
               if (err) return res.status(400).send(err);
-              res.cookie('auth', user.token).json({
+              res.cookie("auth", user.token).json({
                 isAuth: true,
                 id: user._id,
                 email: user.email,
-                token: user.token
+                token: user.token,
               });
             });
           });
         }
       );
-    };
-  })
-})
-
+    }
+  });
+});
 
 router.post("/login", async (req, res) => {
   let password = req.body.password;
@@ -317,4 +333,14 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
+// Use the router to handle requests to the `/.netlify/functions/api` path
+app.use(`/api`, router);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.listen(process.env.PORT || 3001, () => {
+  console.log("The server started on port: ", 3001);
+});
+
+// Export the app and the serverless function
+module.exports = app;
+module.exports.handler = serverless(app);
+// npm run start
